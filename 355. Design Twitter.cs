@@ -27,12 +27,7 @@ public class Twitter {
     }
     
     public IList<int> GetNewsFeed(int userId) {
-        if (!followers.ContainsKey(userId))
-        {
-            HashSet<int> follows = new();
-            follows.Add(userId);
-            followers[userId] = follows;            
-        }
+        Follow(userId, userId);
         HashSet<int> currFollows = followers[userId];
 
         //iterate through tweets to find users that are in follow list. Add all to priority queue ordered by count.
@@ -59,12 +54,7 @@ public class Twitter {
             
         while (res.Count < 10 && currFeed.Count > 0)
         {
-            int current = currFeed.Dequeue();
-            if (res.Contains(current))
-            {
-                continue;
-            }
-            res.Add(current);
+            res.Add(currFeed.Dequeue());
         }
         currFeed.Clear();
         return res;
@@ -73,23 +63,20 @@ public class Twitter {
     public void Follow(int followerId, int followeeId) {
         if (followers.ContainsKey(followerId))
         {
-            HashSet<int> follows = followers[followerId];
-            follows.Add(followeeId);
+            followers[followerId].Add(followeeId);
         }
         else
         {
-            HashSet<int> follows = new();
-            follows.Add(followeeId);
-            follows.Add(followerId);
-            followers[followerId] = follows;
+            followers[followerId] = new HashSet<int>();
+            followers[followerId].Add(followeeId);
+            followers[followerId].Add(followerId);
         }
     }
     
     public void Unfollow(int followerId, int followeeId) {
         if (followers.ContainsKey(followerId))
         {
-            HashSet<int> follows = followers[followerId];
-            follows.Remove(followeeId);
+            followers[followerId].Remove(followeeId);
         }
     }
 }
