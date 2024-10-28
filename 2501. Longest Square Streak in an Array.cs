@@ -3,7 +3,7 @@ public class Solution {
     {
         int longest = 0;
         SortedSet<int> set = new SortedSet<int>(nums);
-        foreach(int num in nums)
+        foreach(int num in set)
         {
             int length = 0;
             long currNum = num;
