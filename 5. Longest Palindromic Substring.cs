@@ -1,3 +1,43 @@
+//New readable solution:
+
+public class Solution
+{
+    //Initialise variables to keep track of the index that the longest pallindrome begins at, and its total length
+    int resultIndex = 0;
+    int resultLength = 0;   
+    public string LongestPalindrome(string s)
+    {
+        //Edge case
+        if (String.IsNullOrEmpty(s)) return "";
+
+        //Iterate through each char in the string and perform the check method twice - once for even length string
+        //and once for odd length string
+        for (int i = 0; i < s.Length; i++)
+        {
+            CheckPalindrome(i, i, s);
+            CheckPalindrome(i, i + 1, s);
+        }
+        return s.Substring(resultIndex, resultLength);
+    }
+    public void CheckPalindrome(int left, int right, string s)
+    {
+        //While the left and right pointer are in bounds, and they are equal (it's palindromic)
+        while (left >= 0 && right < s.Length && s[left] == s[right])
+        {  
+            //If the current string is the longest, upgate the global variables             
+            if (right - left + 1 > resultLength)
+            {
+                resultLength = right - left + 1;
+                resultIndex = left;
+            }
+            //Shift pointers
+            left--;
+            right++;
+        }
+    }
+}
+
+//Old solution -----------------------------------------------------------------------------------------------------------
 public class Solution {
     public string LongestPalindrome(string s)
     {
