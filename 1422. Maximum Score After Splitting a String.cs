@@ -1,3 +1,23 @@
+//One pass - optimal solution:
+public class Solution
+{
+    public int MaxScore(string s)
+    {
+        int maxScore = int.MinValue;
+        int ones = 0;
+        int zeros = 0;
+        for (int i = 0; i < s.Length - 1; i++)
+        {
+            if (s[i] == '1') ones++;
+            else zeros++;
+            maxScore = Math.Max(maxScore, zeros - ones);
+        }
+        if (s[s.Length - 1] == '1') ones++;
+
+        return maxScore + ones;
+    }
+}
+
 //Two passes - initial solution:
 public class Solution
 {
