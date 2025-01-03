@@ -1,3 +1,27 @@
+//Optimised space solution - using prefix sum variables
+public class Solution {
+    public int WaysToSplitArray(int[] nums)
+    {
+        int ans = 0;
+        //Instantiate leftSum and RightSum variables to keep track of the sum on each side at each index as we iterate over the array
+        long leftSum = 0, rightSum = 0;
+        //Set the rightsum variable initially as the sum of the entire array
+        foreach(int num in nums) rightSum += num;
+        //Iterate over the array from 0 to n - 2, as a valid split needs to have elements to its right and so cant be made from the last index
+        for (int i = 0; i < nums.Length - 1; i++)
+        {
+            //Increment leftSum by the current value
+            leftSum += nums[i];
+            //Decrement rightSum by the current value
+            rightSum -= nums[i];
+            //Check if current split is valid
+            if (leftSum >= rightSum) ans++;
+        }
+        return ans;
+    }
+}
+
+//Initial solution - using prefix sum array
 public class Solution
 {
     public int WaysToSplitArray(int[] nums)
