@@ -1,0 +1,27 @@
+public class Solution
+{
+    public int SumOfGoodNumbers(int[] nums, int k)
+    {
+        if (k >= nums.Length) return nums.Sum();
+        int ans = 0;
+        for (int i = 0; i < nums.Length; i++)
+        {
+            if (isGoodNumber(i, nums, k)) ans += nums[i];
+        }
+        return ans;
+    }
+
+    private bool isGoodNumber(int index, int[] nums, int k)
+    {
+        int currentNum = nums[index];
+        if (index - k < nums.Length && index - k >= 0)
+        {
+            if (nums[index - k] >= currentNum) return false;
+        }
+        if (index + k < nums.Length && index + k >= 0)
+        {
+            if (nums[index + k] >= currentNum) return false;
+        }
+        return true;
+    }
+}
