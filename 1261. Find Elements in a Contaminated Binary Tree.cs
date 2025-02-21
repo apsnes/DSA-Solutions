@@ -13,27 +13,35 @@
  */
 public class FindElements
 {
+    //HashSet to store values that exist in the tree
     HashSet<int> values;
+    
     public FindElements(TreeNode root)
     {
         values = new();
+        //Set root val to 0
         root.val = 0;
+        //Call dfs algorithm
         ConstructValues(root);
     }
     
     public bool Find(int target)
     {
+        //Simply return whether or not the value exists in our hashset
         return values.Contains(target);
     }
 
     private void ConstructValues(TreeNode node)
     {
+        //Add current node val to hashset of values that exist
         values.Add(node.val);
+        //if left child is not null, set value and recursively call dfs
         if (node.left != null)
         {
             node.left.val = 2 * node.val + 1;
             ConstructValues(node.left);
         }
+        //As above for right child
         if (node.right != null)
         {
             node.right.val = 2 * node.val + 2;
