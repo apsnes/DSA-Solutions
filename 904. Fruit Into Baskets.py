@@ -27,7 +27,7 @@ class Solution:
     def totalFruit(self, fruits: List[int]) -> int:
         counts = defaultdict(int)
         left, right = 0, 0
-        max_fruits = sum(counts.values())
+        max_fruits = 0
         n = len(fruits)
 
         while right < n:
