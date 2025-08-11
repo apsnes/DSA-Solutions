@@ -4,11 +4,11 @@ class Solution:
         powers = []
         power = 1
 
-        while n > 0:
-            if n % 2 == 1:
+        while n:
+            if n & 1:
                 powers.append(power)
-            n //= 2
-            power *= 2
+            n >>= 1
+            power <<= 1
 
         res = []
         m = len(queries)
