@@ -19,14 +19,14 @@ public class Solution
             else return Math.Max(currSquare, 0);
         }
 
-        var downCost = PathCost(row, col + 1, coins, neutralCount, dp) + currSquare;
-        var rightCost = PathCost(row + 1, col, coins, neutralCount, dp) + currSquare;
+        var rightCost = PathCost(row, col + 1, coins, neutralCount, dp) + currSquare;
+        var downCost = PathCost(row + 1, col, coins, neutralCount, dp) + currSquare;
         var maxReturn = Math.Max(downCost, rightCost);
 
         if (neutralCount < 2 && currSquare < 0)
         {
-            var downCostIgnored = PathCost(row, col + 1, coins, neutralCount + 1, dp);
-            var rightCostIgnored = PathCost(row + 1, col, coins, neutralCount + 1, dp);
+            var rightCostIgnored = PathCost(row, col + 1, coins, neutralCount + 1, dp);
+            var downCostIgnored = PathCost(row + 1, col, coins, neutralCount + 1, dp);
             maxReturn = Math.Max(maxReturn, Math.Max(downCostIgnored, rightCostIgnored));
         }
 
