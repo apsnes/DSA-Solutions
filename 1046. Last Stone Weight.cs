@@ -1,31 +1,26 @@
-public class Solution {
+public class Solution
+{
     public int LastStoneWeight(int[] stones)
     {
-        PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
+        var pq = new PriorityQueue<int, int>();
 
-        foreach (int num in stones)
+        for (int i = 0; i < stones.Length; i++)
         {
-            pq.Enqueue(num, 0 - num);
+            pq.Enqueue(stones[i], 0 - stones[i]);
         }
 
-        while (pq.Count > 1)
+        while(pq.Count > 1)
         {
-            int y = pq.Dequeue();
-            int x = pq.Dequeue();
+            var stone1 = pq.Dequeue();
+            var stone2= pq.Dequeue();
 
-            if (x == y)
-            {
-                continue;
-            }
-            else
-            {
-                y = y - x;
-            }
-            if (y > 0)
-            {
-                pq.Enqueue(y, 0 - y);
-            }
+            if (stone1 == stone2) continue;
+            var maxStone = Math.Max(stone1, stone2);
+            var minStone = Math.Min(stone1, stone2);
+
+            var newStone = maxStone - minStone;
+            pq.Enqueue(newStone, 0 - newStone);
         }
-        return pq.Count > 0 ? pq.Dequeue() : 0;
+        return pq.Count == 1 ? pq.Dequeue() : 0;
     }
 }
