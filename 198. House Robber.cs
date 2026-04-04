@@ -1,22 +1,41 @@
-//Dynamic programming solution using int[] cache
-public class Solution {
+// Top down dynamic programming
+public class Solution
+{
+    private int[] _nums;
+    private Dictionary<int, int> _dict = new();
+
     public int Rob(int[] nums)
     {
-        int n = nums.Length;
-        int[] cache = new int[n];
-        //Fill the cache with -1 so that we can see if any value has been saved
-        Array.Fill(cache, -1);
-        return CalculateMaxMoney(0, cache, n, nums);
+        _nums = nums;
+        return Math.Max(CalculateValue(0), CalculateValue(1));
     }
-    public int CalculateMaxMoney(int index, int[] cache, int n, int[] nums)
+
+    private int CalculateValue(int currHouse)
     {
-        //Base case - we've reached the end of the array
-        if (index >= n) return 0;
-        //If value has already been computed, return it
-        if (cache[index] != -1) return cache[index];
-        //Compute max money available for remaining indicies and add it to cache, then return it
-        int currentMax = Math.Max(CalculateMaxMoney(index + 1, cache, n, nums), CalculateMaxMoney(index + 2, cache, n, nums) + nums[index]);
-        cache[index] = currentMax;
-        return currentMax;
+        if (currHouse >= _nums.Length) return 0;
+        if (_dict.ContainsKey(currHouse)) return _dict[currHouse];
+        var res = _nums[currHouse] + Math.Max(CalculateValue(currHouse + 2), CalculateValue(currHouse + 3));
+        _dict[currHouse] = res;
+        return res;
+    }
+}
+
+// Bottom up dynamic programming
+public class Solution
+{
+    public int Rob(int[] nums)
+    {
+        if (nums.Length == 1) return nums[0];
+
+        var dp = new int[nums.Length];
+        dp[0] = nums[0];
+        dp[1] = Math.Max(dp[0], nums[1]);
+
+        for (int i = 2; i < nums.Length; i++)
+        {
+            dp[i] = Math.Max(dp[i - 1], nums[i] + dp[i - 2]);
+        }
+
+        return dp[^1];
     }
 }
