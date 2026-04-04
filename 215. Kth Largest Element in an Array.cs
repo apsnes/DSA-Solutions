@@ -1,3 +1,24 @@
+// Priority Queue
+public class Solution
+{
+    public int FindKthLargest(int[] nums, int k)
+    {
+        var pq = new PriorityQueue<int, int>();
+        for (int i = 0; i < nums.Length; i++)
+        {
+            if (pq.Count < k) pq.Enqueue(nums[i], nums[i]);
+            else
+            {
+                var pqNum = pq.Dequeue();
+                var maxNum = Math.Max(pqNum, nums[i]);
+                pq.Enqueue(maxNum, maxNum);
+            }
+        }
+        return pq.Dequeue();
+    }
+}
+
+// Quick Select
 public class Solution {
 
     int newK = 0;
