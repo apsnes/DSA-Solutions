@@ -11,31 +11,29 @@
  *     }
  * }
  */
-public class Solution {
-    public IList<int> RightSideView(TreeNode root)
+
+public class Solution
+{
+    public List<int> RightSideView(TreeNode root)
     {
-        IList<int> ans = new List<int>();
-        Queue<TreeNode> q = new Queue<TreeNode>();
+        var res = new List<int>();
+        if (root == null) return res;
+        var q = new Queue<TreeNode>();
         q.Enqueue(root);
         while (q.Count > 0)
         {
-            TreeNode rightSide = null;
-            int qLength = q.Count;
-            for (int i = 0; i < qLength; i++)
+            var levelLength = q.Count;
+            TreeNode mostRight = null;
+
+            for (int i = 0; i < levelLength; i++)
             {
-                TreeNode node = q.Dequeue();
-                if (node != null)
-                {
-                    rightSide = node;
-                    q.Enqueue(node.left);
-                    q.Enqueue(node.right);
-                }
+                mostRight = q.Dequeue();
+                if (mostRight.left != null) q.Enqueue(mostRight.left);
+                if (mostRight.right != null) q.Enqueue(mostRight.right);
             }
-            if (rightSide != null)
-            {
-                ans.Add(rightSide.val);
-            }
+
+            if (mostRight != null) res.Add(mostRight.val);
         }
-        return ans;
+        return res;
     }
 }
