@@ -11,7 +11,7 @@ public class Solution
         dp[s.Length] = 1;
         return calculateWays(0, dp, s);
     }
-    public int calculateWays(int index, int[] dp, string s)
+    public int CalculateWays(int index, int[] dp, string s)
     {
         //Base case - we've already computed this value, return it
         if (dp[index] != -1) return dp[index];
@@ -32,5 +32,31 @@ public class Solution
         //Add the computed result to our dp array for faster future computing
         dp[index] = result;
         return result;
+    }
+}
+
+// Bottom up DP
+public class Solution
+{
+    public int NumDecodings(string s)
+    {
+        var dp = new Dictionary<int, int>();
+        var n = s.Length;
+        dp[s.Length] = 1;
+        
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (s[i] == '0')
+            {
+                dp[i] = 0;
+                continue;
+            }
+            dp[i] = dp[i + 1];
+            if (i < n - 1 && (s[i] == '1' || s[i] == '2' && s[i + 1] <= '6'))
+            {
+                dp[i] += dp[i + 2];
+            }
+        }
+        return dp[0];
     }
 }
