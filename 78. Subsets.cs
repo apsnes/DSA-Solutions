@@ -1,9 +1,9 @@
 class Solution
 {
-    private List<List<int>> _subsets = new();
+    private List<IList<int>> _subsets = new();
     private int[] _nums;
 
-	public List<List<int>> Subsets(int[] nums)
+	public List<IList<int>> Subsets(int[] nums)
 	{
         _nums = nums;
 
