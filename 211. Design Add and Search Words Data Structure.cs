@@ -1,77 +1,63 @@
-public class TrieNode
-{
-    public TrieNode?[] Child;
-    public bool WordEnd;
-
-    public TrieNode()
-    {
-        Child = new TrieNode?[26];
-        WordEnd = false;
-    }
-}
-
 public class WordDictionary
 {
-    TrieNode root;
+    public TrieNode root;
 
     public WordDictionary()
     {
-        root = new TrieNode();
+        root = new('\0');
     }
     
     public void AddWord(string word)
     {
-        TrieNode current = root;
-        foreach (char c in word)
+        if (word == string.Empty) return;
+        var currNode = root;
+        foreach (var c in word)
         {
-            int index = c - 'a';
-            if (current.Child[index] == null)
+            if (currNode.next.Any(x => x.val == c))
             {
-                current.Child[index] = new TrieNode();
+                currNode = currNode.next.First(x => x.val == c);
             }
-            current = current.Child[index];
+            else
+            {
+                var newNode = new TrieNode(c);
+                currNode.next.Add(newNode);
+                currNode = newNode;
+            }
         }
-        current.WordEnd = true;
+        currNode.isEnd = true;
     }
     
     public bool Search(string word)
     {
-        return SearchWord(root, word, 0);
+        return Dfs(root, word);
     }
 
-    private bool SearchWord(TrieNode current, string word, int index)
+    private bool Dfs(TrieNode currNode, string word)
     {
-        if (index == word.Length)
+        if (word.Length == 0)
         {
-            return current.WordEnd;
+            if (currNode.isEnd) return true;
+            else return false;
         }
-        char c = word[index];
-        if (c == '.')
+        if (word[0] != '.')
         {
-            for (int i = 0; i < 26; i++)
-            {
-                if (current.Child[i] != null && SearchWord(current.Child[i]!, word, index + 1))
-                {
-                    return true;
-                }
-            }
-            return false;
+            if (!currNode.next.Any(x => x.val == word[0])) return false;
+            return Dfs(currNode.next.First(x => x.val == word[0]), word[1..]);
         }
         else
         {
-            int charIndex = c - 'a';
-            if (current.Child[charIndex] == null)
+            foreach (var node in currNode.next)
             {
-                return false;
+                if (Dfs(node, word[1..])) return true;
             }
-            return SearchWord(current.Child[charIndex]!, word, index + 1);
+            return false;
         }
     }
 }
 
-/**
- * Your WordDictionary object will be instantiated and called as such:
- * WordDictionary obj = new WordDictionary();
- * obj.AddWord(word);
- * bool param_2 = obj.Search(word);
- */
+public class TrieNode(char value)
+{
+    public List<TrieNode> next = new();
+    public char val = value;
+    public bool isEnd = false;
+} 
