@@ -1,40 +1,55 @@
-public class Solution {
+public class Solution
+{
     public int Search(int[] nums, int target)
     {
-        int left = 0;
-        int right = nums.Length -1;
+        var n = nums.Length;
+        int left = 0, right = n - 1;
+        var rotated = nums[0] > nums[n - 1];
+        var min = nums[0];
+        var deflectionIndex = 0;
 
-        while (left <= right)
+        while (rotated && left <= right)
         {
-            int mid = (left + right) / 2;
-
-            if (nums[mid] == target)
+            if (nums[left] < nums[right])
             {
-                return mid;
+                if (nums[left] < min) deflectionIndex = left;
+                break;
+            }
+
+            var mid = (left + right) / 2;           
+            if (nums[mid] < min)
+            {
+                deflectionIndex = mid;
+                min = nums[mid];
             }
             if (nums[mid] >= nums[left])
             {
-                if (target < nums[left] || target > nums[mid])
-                {
-                    left = mid + 1;
-                }
-                else
-                {
-                    right = mid -1;
-                }
+                left = mid + 1;
             }
             else
             {
-                if (target < nums[mid] || target > nums[right])
-                {
-                    right = mid -1;
-                }
-                else
-                {
-                    left = mid + 1;
-                }
+                right = mid - 1;
             }
         }
-        return -1;      
+
+        var firstRes = BinarySearch(nums[..deflectionIndex], target);
+        if (firstRes != -1) return firstRes;
+        var secondRes = BinarySearch(nums[deflectionIndex..], target);
+        if (secondRes != -1) return secondRes + deflectionIndex;
+        return -1;
+    }
+
+    private int BinarySearch(int[] nums, int target)
+    {
+        int left = 0, right = nums.Length - 1;
+
+        while (left <= right)
+        {
+            var mid = (left + right) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] > target) right = mid - 1;
+            if (nums[mid] < target) left = mid + 1;
+        }
+        return -1;
     }
 }
