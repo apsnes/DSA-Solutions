@@ -1,30 +1,68 @@
+// One pass count solution
 public class Solution
 {
     public bool Check(int[] nums)
     {
-        int r = 0;
-        int prev = nums[0];
+        var count = 0;
+        var prev = nums[0];
+
+        for (int i = 1; i < nums.Length; i++)
+        {
+            if (nums[i] < prev) count++;
+            prev = nums[i];
+        }
+
+        return count == 0 || (count == 1 && nums[0] >= nums[^1]);
+    }
+}
+
+// Reconstruct array
+public class Solution
+{
+    public bool Check(int[] nums)
+    {
+        var n = nums.Length;
+        if (n == 0) return true;
+        var prev = nums[0];
+        var pivotIndex = -1;
+        
         for (int i = 1; i < nums.Length; i++)
         {
             if (nums[i] < prev)
             {
-                r = i;
+                pivotIndex = i;
                 break;
             }
-            prev = nums[i];
+            prev = nums[i];   
         }
-        if (r == 0) return true;
+        if (pivotIndex == -1) return IsSorted(nums);
 
-        int prevNum = nums[r];
-        for (int i = r + 1; i < nums.Length; i++)
+        var newArr = new int[n];
+        var leftArr = nums[..pivotIndex];
+        var rightArr = nums[pivotIndex..];
+
+        var newArrIndex = 0;
+        for (int i = 0; i < rightArr.Length; i++)
         {
-            if (nums[i] < prevNum) return false;
-            prevNum = nums[i];
+            newArr[newArrIndex] = rightArr[i];
+            newArrIndex++;
         }
-        for (int i = 0; i < r; i++)
+        for (int i = 0; i < leftArr.Length; i++)
         {
-            if (nums[i] < prevNum) return false;
-            prevNum = nums[i];
+            newArr[newArrIndex] = leftArr[i];
+            newArrIndex++;
+        }
+
+        return IsSorted(newArr);
+    }
+
+    private bool IsSorted(int[] arr)
+    {
+        var prev = arr[0];
+        for (int i = 1; i < arr.Length; i++)
+        {
+            if (arr[i] < prev) return false;
+            prev = arr[i];
         }
         return true;
     }
