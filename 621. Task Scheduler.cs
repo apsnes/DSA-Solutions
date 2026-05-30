@@ -53,3 +53,51 @@ public class Solution {
         return time;
     }
 }
+
+
+public class Solution
+{
+    public int LeastInterval(char[] tasks, int n)
+    {
+        var pq = new PriorityQueue<char, int>();
+        var time = 0;
+        var counts = new int[26];
+        foreach (var c in tasks)
+        {
+            counts[c - 'A']++;
+        }
+        for (int i = 0; i < counts.Length; i++)
+        {
+            if (counts[i] > 0)
+            {
+                pq.Enqueue((char)(i + 'A') ,-counts[i]);
+            }
+        }
+
+        while(pq.Count > 0)
+        {
+            var cycle = n + 1;
+            var taskCount = 0;
+            var store = new List<char>();
+            while (cycle > 0 && pq.Count > 0)
+            {
+                cycle--;
+                var curr = pq.Dequeue();
+                if (counts[curr - 'A'] > 1)
+                {
+                    counts[curr - 'A']--;
+                    store.Add(curr);
+                }
+                taskCount++;
+            }
+            foreach (var c in store)
+            {
+                pq.Enqueue(c, -counts[c - 'A']);
+            }
+            if (pq.Count == 0) time += taskCount;
+            else time += n + 1;
+        }
+
+        return time;
+    }
+}
