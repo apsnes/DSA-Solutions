@@ -13,7 +13,7 @@ public class Solution
             var currWaviness = 0;
             for (int j = 1; j < currString.Length - 1; j++)
             {
-                var currSubString = $"{currString[j - 1]}{currString[j]}{currString[j + 1]}";
+                var currSubString = currString.Substring(j - 1, 3);
                 if (dp.ContainsKey(currSubString))
                 {
                     currWaviness += dp[currSubString];
